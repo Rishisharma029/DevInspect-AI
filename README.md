@@ -1,250 +1,355 @@
-# DevInspect AI — Repository Inspector 🔍🤖
+<div align="center">
+  <img src="./docs/screenshots/dashboard_overview.png" alt="DevInspect AI Dashboard Overview" width="100%" style="border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);" />
 
-> **"Your repository. Professionally judged by sleep-deprived engineers, recruiters, and CTOs."**
+  # DevInspect AI 🔍🤖
 
-DevInspect AI is an opinionated, client-side, AI-powered GitHub repository scanner. It reviews projects not as generic charts, but the way real humans review them — with skepticism, developer culture awareness, and constructive feedback.
+  **"Your repository. Professionally judged by sleep-deprived engineers, recruiters, and startup CTOs."**
 
-The user interface uses a **handcrafted terminal aesthetic** styled with asymmetric layouts, glowing font rendering, a CRT scanline monitor overlay, and dynamic glitch animations.
+  [![GitHub Version](https://img.shields.io/badge/version-1.0.0-00ff41?style=for-the-badge&logo=github&logoColor=00ff41&labelColor=111118&color=00ff41)](https://github.com/rishisharma-bca25/devinspect-ai)
+  [![Build Status](https://img.shields.io/badge/build-passing-00ff41?style=for-the-badge&logo=github-actions&logoColor=00ff41&labelColor=111118&color=00ff41)](https://github.com/rishisharma-bca25/devinspect-ai/actions)
+  [![Test Coverage](https://img.shields.io/badge/coverage-80%25-00ff41?style=for-the-badge&logo=vitest&logoColor=00ff41&labelColor=111118&color=00ff41)](https://github.com/rishisharma-bca25/devinspect-ai)
+  [![Docker Support](https://img.shields.io/badge/docker-ready-00e5ff?style=for-the-badge&logo=docker&logoColor=00e5ff&labelColor=111118&color=00e5ff)](https://github.com/rishisharma-bca25/devinspect-ai)
+  [![License MIT](https://img.shields.io/badge/license-MIT-b347d9?style=for-the-badge&logo=mit&logoColor=b347d9&labelColor=111118&color=b347d9)](./LICENSE.md)
+  [![Security Hardened](https://img.shields.io/badge/security-hardened-ff3e3e?style=for-the-badge&logo=snyk&logoColor=ff3e3e&labelColor=111118&color=ff3e3e)](./SECURITY.md)
 
----
-
-## 🗺️ Architectural & Data Pipeline Flowchart
-
-Below is the complete flow showing how repository URLs are parsed, fetched, scanned via local heuristic algorithms, evaluated by the AI review engine, and styled with animated interactive elements:
-
-```mermaid
-flowchart TD
-    %% Define Styles
-    classDef user fill:#0a0a0f,stroke:#ffb700,stroke-width:2px,color:#fff;
-    classDef parser fill:#111118,stroke:#00e5ff,stroke-width:2px,color:#fff;
-    classDef gh fill:#14141e,stroke:#b347d9,stroke-width:2px,color:#fff;
-    classDef local fill:#14141e,stroke:#00ff41,stroke-width:2px,color:#fff;
-    classDef ai fill:#1a1a24,stroke:#ff3e3e,stroke-width:2px,color:#fff;
-    classDef ui fill:#0a0a0f,stroke:#ff6b9d,stroke-width:2px,color:#fff;
-
-    %% Elements
-    UserInput["User enters URL<br/>(github.com/owner/repo)"]:::user
-    Parser["parseGitHubUrl() Helper<br/>Extracts owner & repo"]:::parser
-    StartScan["App.jsx Dispatcher<br/>State: SCANNING"]:::parser
-    
-    subgraph github_api ["GitHub Parallel Fetch (github.js)"]
-        GH_Meta["fetchRepoData()<br/>Stars, forks, dates"]
-        GH_Readme["fetchReadme()<br/>Base64 content"]
-        GH_Tree["fetchContents()<br/>Recursive file tree"]
-        GH_Lang["fetchLanguages()<br/>Language byte ratios"]
-        GH_Contribs["fetchContributors()<br/>Top developers list"]
-        GH_Commits["fetchCommits()<br/>Recent 30 commit messages"]
-    end
-    class github_api gh;
-
-    Loader["ASCII Progress Bar<br/>Simulated '██░░' progress logs"]:::ui
-    DataCombine["fetchAllRepoData() Resolves<br/>Combined payload object"]:::gh
-    
-    subgraph heuristics_analyzer ["Pre-AI Heuristic Scanner (analyzer.js)"]
-        ReadScan["analyzeReadme()<br/>Screenshots, badges, word counts, setup check"]
-        TreeScan["analyzeFileTree()<br/>Depth, tests, docker, CI/CD configs"]
-        CloneScan["detectCloneProject()<br/>Tutorial / boilerplate keywords search"]
-        BuzzScan["detectBuzzwords()<br/>Hype levels spectrometer"]
-    end
-    class heuristics_analyzer local;
-
-    MetricsCalc["metrics.js Calculator<br/>Computes 10 witty 0-100 scores"]:::local
-    Detections["detection.js Alerts<br/>Missing README, Localhost Veteran, etc."]:::local
-
-    ApiKeyCheck{"Gemini API Key<br/>Configured?"}:::ai
-    
-    subgraph gemini_engine ["AI Engine (ai.js)"]
-        GeminiCall["gemini-2.0-flash API Call<br/>Telemetry injected as context"]
-        JsonParse["Structured JSON Output<br/>5 Persona Reviews, Roadmap, Roast"]
-    end
-    class gemini_engine ai;
-
-    FallbackReview["personas.js Engine<br/>Local rule-based reviews & witty roasts"]:::local
-    
-    subgraph interaction ["Interactive Display Layout"]
-        CRT["CRT Scanline & Noise Overlay"]
-        Glitch["Section Headers Glitch Anim"]
-        TreeViewer["Collapsible file tree viewer"]
-        StatsAnim["Circular Gauge Count-up & Rotations"]
-        EasterEggs["Easter Eggs: Grass, Burnout, Recruiter"]
-    end
-    class interaction ui;
-
-    PngExport["ExportCard.jsx Wrapper<br/>Renders Report Card DOM to canvas"]:::parser
-    PngDownload["html2canvas PNG Download<br/>Shareable Social Cards"]:::user
-
-    %% Connections
-    UserInput --> Parser
-    Parser -- Valid --> StartScan
-    Parser -- Invalid --> ShakeAnim["Trigger Shake + Error Screen"]:::ui
-    StartScan --> github_api
-    StartScan --> Loader
-    github_api --> DataCombine
-    Loader -- Sync with Actual Resolves --> DataCombine
-    DataCombine --> heuristics_analyzer
-    heuristics_analyzer --> MetricsCalc
-    MetricsCalc --> Detections
-    Detections --> ApiKeyCheck
-    
-    ApiKeyCheck -- Yes --> GeminiCall
-    GeminiCall --> JsonParse
-    ApiKeyCheck -- No --> FallbackReview
-    JsonParse -- Fail Fallback --> FallbackReview
-    
-    JsonParse --> interaction
-    FallbackReview --> interaction
-    interaction --> PngExport
-    PngExport --> PngDownload
-```
+  [⚡ Live Demo](https://github.com/rishisharma-bca25/devinspect-ai) | [🖥️ GitHub Repository](https://github.com/rishisharma-bca25/devinspect-ai) | [📚 Documentation](./ARCHITECTURE.md)
+</div>
 
 ---
 
-## 🚀 Key Features
+# 📖 Project Overview
 
-*   **Pre-AI Spec Spectrometer**: Parses file trees and readmes to compute metrics like *Founder Hallucination Severity*, *Technical Debt Forecast*, and *Tutorial Dependency* (catching clone templates).
-*   **Gemini AI Inspection**: Feeds repository telemetry to Gemini for highly contextual reviews from 5 distinct personas:
-    *   👨‍💻 **Senior Engineer** (practical, architecture-focused)
-    *   👔 **Recruiter** (portfolio and hireability-focused)
-    *   🔧 **DevOps Veteran** (traumatized, suspicious, docker/CI-focused)
-    *   📦 **Open Source Maintainer** (documentation and licenses-focused)
-    *   🚀 **Startup CTO** (investor-minded, speed-focused)
-*   **Witty Rule-Based Fallbacks**: Don't have a Gemini API key? The local personas engine falls back to generating rule-based developer-humor roasts custom-tailored to your project's stats.
-*   **Social Report Cards**: Renders beautiful report templates (CTO Report, Recruiter Card) and exports them locally to high-quality `.png` files using `html2canvas`.
-*   **Developer Culture Easter Eggs**: Bouncing DVD corners, burnout level trackers, inactivity recruiter bubbles, and 30-minute "Touch Grass" warnings.
+### What is DevInspect AI?
+DevInspect AI is an **AI-powered repository intelligence platform** that analyzes codebases, documentation, deployment readiness, testing maturity, open-source quality, and portfolio strength.
 
----
+It is designed to give developers immediate, transparent feedback on their projects. Rather than showing generic charts and simple line counts, DevInspect AI scans repositories the way real technical professionals do—with skepticism, developer-culture awareness, and deep architectural insight.
 
-## 🔒 Security Hardening & Credentials Shield
+### The Problem it Solves
+Most automated repository scanners produce dry, static code coverage graphs or simple line percentages. Hiring managers and recruiters don't have time to parse through thousands of lines of raw source code, while developers struggle to keep track of security drift, missing configurations, boilerplate leftovers, and poor documentation files. 
 
-DevInspect AI enforces production-grade security standards to protect users and development instances:
-*   **Zero Long-Term Token Storage**: All credentials (GitHub PAT and Gemini API Keys) are persisted **exclusively in `sessionStorage`**. They are stored only during the active browser session and are completely discarded on tab refresh, closure, or logout.
-*   **Local Heuristics Secrets Scanner**: The analyzer contains a built-in secrets scanner matching rules for `.env` exposures, committed private keys (`.pem`, `.key`, `id_rsa`), AWS access keys, JWT tokens, and hardcoded variables.
-*   **Hardened Node Production Server**: Features:
-    *   **Helmet.js CSP Configuration**: Employs strict HTTP headers and a robust Content Security Policy, locking script sources and limiting API connections strictly to `api.github.com` and `generativelanguage.googleapis.com`.
-    *   **Express Rate Limiter**: Limits endpoints to a maximum of 100 requests per 15 minutes to block DDoS and rate limit abuse.
-    *   **Secure Session Cookies**: Implements secure, signed HttpOnly cookies (with `secure: true` in production) to safeguard administrative logins.
+### Why Use DevInspect AI?
+* **Recruiter-Ready Social Cards**: Instantly export high-fidelity dashboard screenshots and summary evaluation cards tailored for non-technical hiring managers.
+* **Deterministic Rule Validation**: Our parser operates on an evidence-based point score index, giving you clear, reproducible benchmarks for grading repositories.
+* **Cyberpunk Console Aesthetic**: Enjoy a handcrafted, retro CRT monitor theme equipped with scanline overlays, typewriter cursors, radial glow centers, and text glitch animations.
 
 ---
 
-## 💻 Local Setup & Development
+# 🚀 Key Features
 
-### 1. Prerequisite Checklist
-*   **Node.js**: Version 20+ (tested on Node 20 / React 19).
-*   **GitHub Token (PAT)** (Optional but recommended): Unauthenticated GitHub limits API requests to 60/hr. In the settings gear, paste a GitHub PAT to raise limits to 5,000/hr.
-*   **Gemini API Key** (Optional): Provide a Gemini API key in the settings panel to activate the LLM inspection engine.
+### 🔍 1. Repository Heuristics Analysis
+* **Boilerplate Detection**: Automatically flags template boilerplate or cloned tutorials by matching patterns, structure paths, and keywords.
+* **Architecture Parsing**: Scans directory structures and files recursively to evaluate layout depth and modular organization.
+* **Technical Debt Spectrometer**: Evaluates files count, depth, and commit patterns to forecast long-term code maintainability.
+* **Documentation Reviewer**: Measures README density, word count ratios, block codes, and setup checkmarks.
+* **Deployment Validation**: Audits config paths, checking for container setups and automation workflows.
 
-### 2. Installation Commands
-```bash
-# Install project dependencies
-npm install
+### 🎭 2. 5-Persona AI Reviews
+Get detailed, highly contextual, and humor-infused feedback from five specialized developer profiles:
+* 👨‍💻 **Senior Engineer**: Focuses on clean abstractions, duplicate patterns, file depth, and architectural risks.
+* 👔 **Recruiter**: Grades presentation, readme visual polish, badges, and hireability value.
+* 🔧 **DevOps Veteran**: Critiques deployment configurations, container health, CI configs, and environment protection.
+* 📦 **Open Source Maintainer**: Verifies license files, contributing rules, issue formats, and documentation density.
+* 🚀 **Startup CTO**: Focuses on business scaling, tech stacks alignment, and execution velocity.
 
-# Start local hot-reloading development server
-npm run dev
+### 📊 3. 6 Core Quality Metrics
+* **Documentation Score**: README formatting, badge configurations, setup guidelines, and screenshot assets.
+* **Deployment Confidence**: Infrastructure templates, CI automation files, and host configurations.
+* **Portfolio Value**: Unique elements, code originality, and presentation quality.
+* **Production Readiness**: Non-root container setups, rate limiting, and dependencies health.
+* **Technical Debt Forecast**: Code depth metrics, commit frequencies, and conventions compliance.
+* **Open Source Friendliness**: Repository licensing, contributor rules, code-of-conducts, and security structures.
 
-# Run Vitest test runner
-npm run test:run
-
-# Run linter checks
-npm run lint
-
-# Compile production-ready builds
-npm run build
-```
-
----
-
-## 🐳 Docker Deployment & Hardening
-
-DevInspect AI can be built and run in a fully containerized, secure production container.
-
-### 1. Docker Build
-To compile the multi-stage, security-hardened production image running under the non-root `node` user:
-```bash
-docker build -t devinspect-ai:latest .
-```
-
-### 2. Docker Compose Execution
-To start the application locally with automated health monitoring checks:
-```bash
-docker compose up -d
-```
-The interface will be hosted at `http://localhost:3000`.
+### 💾 4. Canvas-Powered Export Engine
+Renders beautiful, downloadable cards directly from your browser using HTML5 Canvas (`html2canvas`):
+* **Recruiter Hireability Card** — Clear green-flag checklists and non-technical score summaries.
+* **CTO Technical Review Sheet** — Full roadmap layouts, technical debt forecasts, and risk tables.
+* **Engineering Scorecard** — Deep metrics breakdowns, roasts, and optimization tasks.
 
 ---
 
-## 🧪 Testing Suite & CI/CD
+# 📸 Screenshot Gallery
 
-DevInspect AI has a fully configured Vitest suite validating metrics, scanners, component renderings, and easter eggs.
-
-### 1. Running Tests
-To run all tests:
-```bash
-npm run test:run
-```
-
-To run tests with code coverage metrics:
-```bash
-npm run coverage
-```
-
-### 2. GitHub Actions Pipeline
-A CI/CD validation pipeline is defined in `.github/workflows/ci.yml`. It runs automatically on pull requests and pushes to `main` to:
-1. Lint the codebase (`npm run lint`).
-2. Run all tests and verify coverage reports (`npm run coverage`).
-3. Compile the production Docker image to ensure container building succeeds.
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technology | Details |
-| ----- | ---------- | ------- |
-| **Frontend Core** | React 19 + Vite 8 | Ultra-fast SPA scaffolding |
-| **Styling** | Vanilla CSS Modules | Scope-isolated custom classes |
-| **Animations** | Motion (Framer Motion) | Hardware-accelerated fluid motion transitions |
-| **Backend Core** | Node.js + Express 5 | High-performance API server |
-| **Security Headers** | Helmet.js v8 | CSP validation and X-Frame limits |
-| **Unit Testing** | Vitest 4 + V8 | Test-driven metrics validation |
-| **Containerization** | Docker + Compose | Multi-stage Alpine node runtime |
-
----
-
-## 🗺️ Product Roadmap
-
-- [ ] **GitHub OAuth Integration**: Transition from manual PAT inputs to standard, OAuth-based token authorization.
-- [ ] **Multi-Git Providers Support**: Expand heuristic scanners and API integrations to support GitLab and Bitbucket repositories.
-- [ ] **Abstract Syntax Tree (AST) Parsing**: Incorporate local Javascript/Python AST parsers to diagnose structural logic risks.
-- [ ] **Custom Persona Builder**: Allow developers to prompt custom inspection personas with individualized scoring weights.
-
----
-
-## 📸 Screenshot Gallery
-
-### Dashboard Landing View
+### 1. Dashboard Overview
 ![Dashboard Overview](docs/screenshots/dashboard_overview.png)
 
-### Heuristics Scans & Evidence Boards
+### 2. Repository Analysis
 ![Repository Analysis](docs/screenshots/repository_analysis.png)
-![Documentation Analysis](docs/screenshots/documentation_analysis.png)
 
-### Diagnostics & Persona Reviews
-![Security Scanner](docs/screenshots/security_scanner.png)
+### 3. Persona Reviews
 ![Persona Reviews](docs/screenshots/persona_reviews.png)
 
-### Export Cards & Recruiter Portals
-![Export Reports](docs/screenshots/export_reports.png)
+### 4. Architecture Inspection
+![Architecture Inspection](docs/screenshots/repository_analysis.png)
+
+### 5. Documentation Analysis
+![Documentation Analysis](docs/screenshots/documentation_analysis.png)
+
+### 6. Export System
+![Export System](docs/screenshots/export_reports.png)
+
+### 7. Recruiter View
 ![Recruiter View](docs/screenshots/recruiter_view.png)
+
+### 8. CTO View
 ![CTO View](docs/screenshots/cto_view.png)
 
 ---
 
-## 👥 Authors & Credits
+# 🗺️ System Architecture
 
-*   **Rishi Sharma** - Lead Developer & Systems Architect
-*   **Antigravity AI** - Peer Programming Assistant (Google DeepMind Team)
+DevInspect AI runs as a single page application with a dedicated backend server. The pipeline parses, fetches, evaluates, and compiles repository diagnostics through 6 core layers:
+
+```mermaid
+flowchart LR
+    %% Styles
+    classDef step fill:#111118,stroke:#00ff41,stroke-width:2px,color:#fff;
+    classDef engine fill:#14141e,stroke:#00e5ff,stroke-width:2px,color:#fff;
+    classDef output fill:#1a1a24,stroke:#b347d9,stroke-width:2px,color:#fff;
+
+    %% Nodes
+    In["Repository Input<br/>(URL Verification)"]:::step
+    Fetch["Analysis Engine<br/>(GitHub REST Fetch)"]:::engine
+    Rules["Scoring Engine<br/>(Rule-Based Calculations)"]:::engine
+    AI["Persona Generator<br/>(Gemini / Heuristics)"]:::engine
+    Canvas["Export Engine<br/>(html2canvas Cards)"]:::engine
+    Reports["Shareable Reports<br/>(PNG Downloads)"]:::output
+
+    %% Flow
+    In --> Fetch --> Rules --> AI --> Canvas --> Reports
+```
+
+1. **Repository Input**: Verification checks resolve standard GitHub URLs (`github.com/owner/repository`).
+2. **Analysis Engine**: Fetches file trees, README content, contributor lists, commits, and language metrics concurrently.
+3. **Scoring Engine**: Evaluates files using deterministic criteria, mapping points to concrete codebase features.
+4. **Persona Generator**: Combines AI model inference with structured rule fallbacks to generate persona opinions.
+5. **Export Engine**: Uses canvas overlays to package dashboards into downloadable blocks.
+6. **Shareable Reports**: Saves documents locally to user machines.
 
 ---
 
-## 📄 License & Terms
+# 🏆 How Scoring Works
 
-This project is licensed under the terms of the **[LICENSE.md](LICENSE.md)** (Educational and Non-Commercial Use). You may modify and run the software for personal study, but commercial monetization or SaaS deployment is prohibited. For details on how to contribute, review the **[CONTRIBUTING.md](CONTRIBUTING.md)** document.
+Our score algorithms are completely transparent and evidence-based. No black-box AI guessing is used to compute grades:
+
+### 📝 Documentation Score (Max: 100)
+* **README Presence**: +15 points.
+* **Badge Indicators**: Up to +10 points (detects shields.io or custom badges).
+* **Visual Elements**: Up to +10 points (detects screenshots or demo animations).
+* **Setup Instructions**: Up to +15 points (detects setup, installation, or docker headings).
+* **Examples & APIs**: Up to +10 points.
+* **Community Files**: Up to +20 points (checks for `CONTRIBUTING`, `CODE_OF_CONDUCT`, and `LICENSE`).
+
+### 🐳 Deployment Score (Max: 100)
+* **Dockerfile**: +20 points.
+* **Compose File**: +15 points.
+* **CI/CD Config**: +15 points (detects GitHub Workflows or GitLab CI).
+* **Environment Templates**: +15 points (checks for `.env.example`).
+* **Health Checks**: +10 points (verifies health checkers in compose configurations).
+* **Lock Files**: +10 points (requires `package-lock.json` or `yarn.lock`).
+
+### 📄 Open Source Score (Max: 100)
+* **License File**: +30 points.
+* **Contributing Rules**: +20 points.
+* **Code of Conduct**: +20 points.
+* **Security Advisories**: +15 points (detects `SECURITY.md`).
+* **Issue Structures**: +15 points (checks for issue templates).
+
+### 🧪 Testing Score (Max: 100)
+* **Testing Libraries**: +30 points (detects Jest, Vitest, Cypress, Mocha, etc.).
+* **Test Configurations**: +20 points (detects `.test.js`, `.spec.js`, `vitest.config.js`).
+* **Test File Density**: Up to +30 points based on the ratio of tests to source code.
+* **Coverage Templates**: +20 points.
+
+---
+
+# 🛠️ Technology Stack
+
+| Layer | Technologies | Role |
+| ----- | ------------ | ---- |
+| **Frontend Core** | React 19 + Vite 8 | Ultra-fast rendering engine & build tool |
+| **Styling** | Vanilla CSS Modules | Isolation-scoped local layouts |
+| **Animations** | Motion (Framer Motion) | Hardware-accelerated fluid motion transitions |
+| **Backend Core** | Node.js + Express 5 | Fast static file delivery & authentication |
+| **AI Processing** | Gemini API (`@google/generative-ai`) | Opinionated LLM evaluations |
+| **Unit Testing** | Vitest 4 + `@testing-library/react` | Core logic validation and gauge testing |
+| **Deployment** | Docker + Docker Compose | Containerized local production setups |
+
+---
+
+# 💻 Installation & Setup
+
+### 1. Prerequisites
+* **Node.js**: Version 20 or higher.
+* **GitHub Personal Access Token (PAT)** (Optional but recommended): Raises GitHub unauthenticated API request limit from 60/hr to 5,000/hr.
+* **Gemini API Key** (Optional): Activates the AI LLM inspection reviewer.
+
+### 2. Quick Start Command Line
+```bash
+# Clone the repository
+git clone https://github.com/your-username/devinspect-ai.git
+cd devinspect-ai
+
+# Install dependencies
+npm install
+
+# Create environment config
+cp .env.example .env
+```
+
+### 3. Execution Commands
+* **Development Mode** (Hot-reloading frontend + server):
+  ```bash
+  npm run dev
+  ```
+* **Production Build & Execution**:
+  ```bash
+  # Compile static assets
+  npm run build
+
+  # Start the Express server
+  npm start
+  ```
+
+---
+
+# 🔑 Environment Variables
+
+The application can be configured using environment variables in a `.env` file at the root:
+
+| Variable | Description | Required | Default |
+| -------- | ----------- | -------- | ------- |
+| **`PORT`** | The port the Node Express server listens on. | No | `3000` |
+| **`SESSION_SECRET`** | Secret key used to sign Express session cookies. | Yes | `devinspect-ai-super-secret-key` |
+| **`DEVINSPECT_PASSWORD`** | BCrypt hash password used to restrict app access. | No | *None (Public Access)* |
+| **`GITHUB_TOKEN`** | Developer PAT to raise GitHub rate limits. | No | *None* |
+| **`GEMINI_API_KEY`** | Google AI Gemini key to power AI reviews. | No | *None (Local Fallback)* |
+
+---
+
+# 🐳 Docker Deployment
+
+DevInspect AI includes a multi-stage Docker setup optimized for security, performance, and low footprints.
+
+### 1. Build Production Image
+```bash
+docker build -t devinspect-ai:latest .
+```
+
+### 2. Orchestrate via Docker Compose
+* **Start Container**:
+  ```bash
+  docker compose up -d
+  ```
+* **Stop Container**:
+  ```bash
+  docker compose down
+  ```
+
+### 3. Container Health Checks
+The container includes a built-in health monitor checking endpoint response codes every 30 seconds:
+```yaml
+healthcheck:
+  test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+```
+
+---
+
+# 🧪 Testing Suite
+
+We use Vitest to validate parsing calculations, regex scanning patterns, and component structures:
+
+* **Execute Unit Tests**:
+  ```bash
+  npm run test:run
+  ```
+* **Generate Code Coverage**:
+  ```bash
+  npm run coverage
+  ```
+* **Testing Scope**:
+  - `metrics.test.js`: Validates the scoring algorithms.
+  - `analyzer.test.js`: Confirms secrets scanner checks against test credentials patterns.
+  - `common.test.jsx`: Tests circular gauge render paths and count animations.
+
+---
+
+# 🔄 CI/CD Pipeline
+
+We use GitHub Actions to automate checks on pushes and pull requests to `main`. The configuration is defined in `.github/workflows/ci.yml`:
+
+```mermaid
+flowchart TD
+    %% Define Styles
+    classDef start fill:#111118,stroke:#00ff41,stroke-width:2px,color:#fff;
+    classDef process fill:#14141e,stroke:#00e5ff,stroke-width:2px,color:#fff;
+    classDef endstep fill:#1a1a24,stroke:#b347d9,stroke-width:2px,color:#fff;
+
+    %% Nodes
+    Trigger["Code Push / PR"]:::start
+    Install["Install Packages"]:::process
+    Lint["Linter Checks"]:::process
+    Test["Run Vitest Suite"]:::process
+    Coverage["Verify Coverage Targets"]:::process
+    Docker["Verify Docker Compile"]:::process
+    Verify["Complete & Pass"]:::endstep
+
+    %% Flow
+    Trigger --> Install --> Lint --> Test --> Coverage --> Docker --> Verify
+```
+
+The pipeline blocks integration if linting warnings occur, tests fail, or the Docker multi-stage build breaks.
+
+---
+
+# 🔒 Security Implementation
+
+* **Transient storage**: All inputs (PAT, Gemini API Key) are held in browser `sessionStorage`, keeping them out of cookies or browser databases.
+* **Content Security Policy (CSP)**: Helmet.js blocks unauthorized external scripts and locks API connections to `api.github.com` and `generativelanguage.googleapis.com`.
+* **Express Rate Limiting**: Prevents API brute-forcing by limiting client IPs to 100 requests per 15 minutes.
+* **Secrets Shield**: Regex scanner blocks files parsing if private keys, AWS tokens, or environment structures are exposed.
+
+---
+
+# ⚡ Performance Optimizations
+
+* **Vite Production Bundle**: Compiles assets in **850ms** utilizing optimized rollup bundling.
+* **Isolated CSS Modularization**: CSS Modules prevent render blocking and layout shifts.
+* **Concurreny Processing**: Queries are dispatched concurrently to GitHub, optimizing latency.
+
+---
+
+# 🗺️ Product Roadmap
+
+* [ ] **GitHub OAuth Support**: Authorize users via GitHub OAuth flow.
+* [ ] **Repository Comparison**: Compare multiple projects side-by-side.
+* [ ] **Historical Analytics**: Track score drift and progress over time.
+* [ ] **Team Collaborations**: Provide joint dashboards for technical reviews.
+* [ ] **AST Parsing**: Read JS/Python code trees to detect logic bugs.
+* [ ] **Multi-Git Hosting**: Support GitLab and Bitbucket repositories.
+
+---
+
+# 📦 Contributing
+
+We love open-source contributions!
+1. Review the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+2. Read the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+3. Submit a Pull Request.
+
+---
+
+# 👤 Author
+
+**Rishi Sharma**
+* **Role**: BCA Student & Full-Stack Developer
+* **Interests**: Client-Side AI integrations, React Design, and DevOps
+* **GitHub**: [@rishisharma-bca25](https://github.com/rishisharma-bca25)
+
+---
+
+# 📄 License
+
+This project is licensed under the terms of the [MIT License](LICENSE.md).
