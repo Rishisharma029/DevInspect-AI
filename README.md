@@ -12,7 +12,7 @@
   [![License MIT](https://img.shields.io/badge/license-MIT-b347d9?style=for-the-badge&logo=mit&logoColor=b347d9&labelColor=111118&color=b347d9)](./LICENSE.md)
   [![Security Hardened](https://img.shields.io/badge/security-hardened-ff3e3e?style=for-the-badge&logo=snyk&logoColor=ff3e3e&labelColor=111118&color=ff3e3e)](./SECURITY.md)
 
-  [⚡ Live Demo](https://github.com/rishisharma-bca25/devinspect-ai) | [🖥️ GitHub Repository](https://github.com/rishisharma-bca25/devinspect-ai) | [📚 Documentation](./ARCHITECTURE.md)
+  [⚡ Live Demo](https://rishisharma029.github.io/DevInspect-AI/) | [🖥️ GitHub Repository](https://github.com/rishisharma-bca25/devinspect-ai) | [📚 Documentation](./ARCHITECTURE.md)
 </div>
 
 ---
