@@ -1,0 +1,154 @@
+.section {
+  padding: var(--space-xl) var(--space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.terminalPrefix {
+  font-family: var(--font-mono);
+  color: var(--accent-green);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.summaryClean {
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+  font-size: var(--font-size-xs);
+}
+
+.summaryAlert {
+  font-family: var(--font-mono);
+  color: var(--accent-red);
+  font-size: var(--font-size-xs);
+}
+
+.cleanState {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.cleanIcon {
+  font-size: var(--font-size-3xl);
+}
+
+.cleanText {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.riskCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  position: relative;
+}
+
+.securityCard {
+  border-left: 4px solid var(--accent-red);
+}
+
+.maintainabilityCard {
+  border-left: 4px solid var(--accent-amber);
+}
+
+.testCard {
+  border-left: 4px solid var(--accent-cyan);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.cardHeader h3 {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.cardIcon {
+  font-size: 16px;
+}
+
+.noRisksText {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  margin: var(--space-sm) 0;
+}
+
+.riskList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.riskItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  width: fit-content;
+  text-transform: uppercase;
+}
+
+.badgeCritical {
+  background: var(--accent-red-dim);
+  color: var(--accent-red);
+}
+
+.badgeWarning {
+  background: var(--accent-amber-dim);
+  color: var(--accent-amber);
+}
+
+.badgeInfo {
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+}
+
+.riskDesc {
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0;
+}

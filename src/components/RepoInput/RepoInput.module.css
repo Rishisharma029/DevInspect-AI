@@ -1,0 +1,285 @@
+/* ═══════════════════════════════════════════════════════════════
+   REPO INPUT — Terminal-styled URL input
+   "devinspect@ai:~$ inspect"
+   ═══════════════════════════════════════════════════════════════ */
+
+.section {
+  padding: var(--space-2xl) var(--space-xl);
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── Input Container ───────────────────────────────────────── */
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.terminalInputRow {
+  display: flex;
+  align-items: center;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-md);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
+}
+
+.terminalInputRow:focus-within {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 3px var(--accent-green-dim), 0 0 20px var(--accent-green-dim);
+}
+
+.prompt {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--accent-green);
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+  padding-right: var(--space-sm);
+  opacity: 0.8;
+}
+
+.promptUser {
+  color: var(--accent-cyan);
+}
+
+.promptAt {
+  color: var(--text-muted);
+}
+
+.promptHost {
+  color: var(--accent-purple);
+}
+
+.promptPath {
+  color: var(--accent-amber);
+}
+
+.promptCmd {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  padding: var(--space-md) 0;
+  caret-color: var(--accent-green);
+}
+
+.input::placeholder {
+  color: var(--text-dim);
+}
+
+/* ── Invalid shake ─────────────────────────────────────────── */
+.shake {
+  animation: inputShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.shakeRow {
+  border-color: var(--accent-red) !important;
+  box-shadow: 0 0 0 3px var(--accent-red-dim), 0 0 15px var(--accent-red-dim) !important;
+}
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-6px); }
+  20% { transform: translateX(5px); }
+  30% { transform: translateX(-4px); }
+  40% { transform: translateX(3px); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(1px); }
+}
+
+/* ── Submit Button ─────────────────────────────────────────── */
+.submitBtn {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: var(--space-md) var(--space-xl);
+  border: 1px solid var(--accent-green);
+  background: transparent;
+  color: var(--accent-green);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.submitBtn:hover {
+  background: var(--accent-green-dim);
+  box-shadow: 0 0 20px var(--accent-green-dim),
+              0 0 50px var(--accent-green-dim),
+              inset 0 0 20px var(--accent-green-dim);
+}
+
+.submitBtnReady {
+  background: var(--accent-green) !important;
+  color: var(--bg-primary) !important;
+  box-shadow: 0 0 15px var(--accent-green-dim) !important;
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
+}
+
+.submitBtn::before {
+  content: '▶ ';
+  opacity: 0.7;
+}
+
+/* ── Status line ───────────────────────────────────────────── */
+.statusLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  gap: var(--space-md);
+}
+
+.tokenStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tokenDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.tokenDotGreen {
+  background: var(--accent-green);
+  box-shadow: 0 0 4px var(--accent-green);
+}
+
+.tokenDotRed {
+  background: var(--accent-red);
+  box-shadow: 0 0 4px var(--accent-red);
+}
+
+.settingsBtn {
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.settingsBtn:hover {
+  border-color: var(--accent-green-dim);
+  color: var(--accent-green);
+}
+
+/* ── Recent Scans ──────────────────────────────────────────── */
+.recentScans {
+  margin-top: var(--space-lg);
+}
+
+.recentTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-sm);
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recentItem {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  padding: 6px var(--space-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.recentItem:hover {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+  color: var(--accent-green);
+}
+
+.recentItem::before {
+  content: '>';
+  color: var(--accent-green);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.recentItem:hover::before {
+  opacity: 0.6;
+}
+
+.recentTime {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .prompt {
+    font-size: 11px;
+  }
+
+  .input {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .promptPath,
+  .promptAt,
+  .promptHost {
+    display: none;
+  }
+
+  .statusLine {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+}

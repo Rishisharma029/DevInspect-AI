@@ -1,0 +1,268 @@
+/* ═══════════════════════════════════════════════════════════════
+   SCAN PHASE — Theatrical scanning terminal
+   "Running diagnostics you didn't ask for"
+   ═══════════════════════════════════════════════════════════════ */
+
+.scanPhase {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xl);
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.scanHeader {
+  margin-bottom: var(--space-lg);
+}
+
+.scanTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--accent-green);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.scanTitle::before {
+  content: '>';
+  opacity: 0.5;
+}
+
+.scanTarget {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+/* ── Progress Bar ──────────────────────────────────────────── */
+.progressSection {
+  margin-bottom: var(--space-lg);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.progressAscii {
+  color: var(--accent-green);
+  letter-spacing: -1px;
+  flex: 1;
+  overflow: hidden;
+  text-shadow: 0 0 6px var(--accent-green-dim);
+}
+
+.progressPct {
+  color: var(--accent-green);
+  font-weight: 700;
+  min-width: 40px;
+  text-align: right;
+  text-shadow: 0 0 8px var(--accent-green-dim);
+}
+
+.progressBar {
+  width: 100%;
+  height: 2px;
+  background: var(--bg-tertiary);
+  border-radius: 1px;
+  margin-top: var(--space-xs);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--accent-green);
+  border-radius: 1px;
+  transition: width 0.4s ease-out;
+  box-shadow: 0 0 8px var(--accent-green-dim);
+}
+
+/* ── Terminal Output ───────────────────────────────────────── */
+.terminal {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+
+.termDots {
+  display: flex;
+  gap: 6px;
+}
+
+.termDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.termDotR { background: var(--accent-red); box-shadow: 0 0 4px var(--accent-red-dim); }
+.termDotY { background: var(--accent-amber); box-shadow: 0 0 4px var(--accent-amber-dim); }
+.termDotG { background: var(--accent-green); box-shadow: 0 0 4px var(--accent-green-dim); }
+
+.termTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.terminalBody {
+  flex: 1;
+  padding: var(--space-md);
+  overflow-y: auto;
+  max-height: 55vh;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.8;
+  scroll-behavior: smooth;
+}
+
+/* ── Log Lines ─────────────────────────────────────────────── */
+.logLine {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: 1px 0;
+}
+
+.logPrefix {
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  min-width: 50px;
+}
+
+.logPrefixScan {
+  color: var(--accent-green);
+}
+
+.logPrefixWarn {
+  color: var(--accent-amber);
+}
+
+.logPrefixDone {
+  color: var(--accent-cyan);
+}
+
+.logText {
+  color: var(--text-secondary);
+}
+
+.logTextDone {
+  color: var(--accent-green);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--accent-green-dim);
+}
+
+/* ── Blinking cursor at end ────────────────────────────────── */
+.termCursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: var(--accent-green);
+  margin-left: 2px;
+  animation: termBlink 0.8s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes termBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Matrix rain (background) ──────────────────────────────── */
+.matrixBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+  overflow: hidden;
+}
+
+.matrixColumn {
+  position: absolute;
+  top: -100%;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-green);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  animation: matrixFall linear infinite;
+  letter-spacing: 4px;
+  line-height: 1;
+}
+
+@keyframes matrixFall {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* ── Flash overlay (completion) ────────────────────────────── */
+.flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-green);
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .scanPhase {
+    padding: var(--space-md);
+  }
+
+  .terminalBody {
+    max-height: 50vh;
+    font-size: 12px;
+  }
+
+  .progressAscii {
+    font-size: 11px;
+  }
+}
+
+/* ── Reduced Motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .matrixColumn {
+    animation: none;
+    display: none;
+  }
+
+  .progressFill {
+    transition: none;
+  }
+}

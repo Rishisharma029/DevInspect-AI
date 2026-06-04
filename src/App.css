@@ -1,0 +1,191 @@
+/* ═══════════════════════════════════════════════════════
+   DEVINSPECT AI — APP STYLES
+   ═══════════════════════════════════════════════════════ */
+
+.app {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Results */
+.results {
+  flex: 1;
+}
+
+.results-nav {
+  display: flex;
+  justify-content: flex-start;
+  padding: var(--space-lg) var(--space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.nav-btn {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.nav-btn:hover {
+  color: var(--accent-green);
+  border-color: var(--accent-green-dim);
+}
+
+/* Section Divider */
+.section-divider {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-green-dim),
+    var(--border-subtle),
+    var(--accent-green-dim),
+    transparent
+  );
+}
+
+/* Error Screen */
+.error-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 500px;
+  padding: var(--space-xl);
+}
+
+.error-icon {
+  font-size: 64px;
+}
+
+.error-title {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  color: var(--accent-red);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.error-message {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.error-humor {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Footer */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  margin-top: var(--space-3xl);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.footer-version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRINT MEDIA STYLES (PDF EXPORTS)
+   ═══════════════════════════════════════════════════════ */
+@media print {
+  body, html, .app, .results, main {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* Hide interactive, styling and floating elements */
+  [class*="crtWrapper"],
+  .results-nav,
+  .section-divider,
+  [class*="explainBtn"],
+  [class*="viewTabs"],
+  [class*="actions"],
+  .app-footer,
+  [class*="modalOverlay"],
+  [class*="settings"],
+  [class*="recruiterTyping"],
+  [class*="burnoutMeter"],
+  [class*="touchGrass"],
+  [class*="humanityCheck"],
+  [class*="respectBadge"],
+  [class*="dvdLogo"],
+  [class*="cornerHit"],
+  [class*="settingsBtn"] {
+    display: none !important;
+  }
+
+  /* High contrast colors for print typography */
+  h1, h2, h3, h4, h5, h6, p, span, li, a {
+    color: #111111 !important;
+    text-shadow: none !important;
+  }
+
+  /* Reset card backgrounds and outlines to be visible and clear on white backgrounds */
+  [class*="card"],
+  [class*="scoreCard"],
+  [class*="riskCard"],
+  [class*="timelineNodePoint"],
+  [class*="evidenceBlock"] {
+    background: #ffffff !important;
+    border: 1px solid #999999 !important;
+    box-shadow: none !important;
+    color: #111111 !important;
+  }
+
+  /* Keep circular score rings visible but high-contrast */
+  circle {
+    stroke-opacity: 1 !important;
+  }
+
+  /* Adjust page flow to prevent card breaks and secure clean paginated layout */
+  .results > section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 2.5cm !important;
+  }
+}

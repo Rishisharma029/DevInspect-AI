@@ -1,0 +1,460 @@
+/* ═══════════════════════════════════════════════════════════════
+   DEVINSPECT AI — COMMON COMPONENTS CSS MODULE
+   "Every pixel was placed here with intention... mostly"
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── GLITCH TEXT ────────────────────────────────────────────── */
+.glitchText {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-mono);
+}
+
+.glitchText::before,
+.glitchText::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.glitchText::before {
+  color: var(--accent-cyan);
+  z-index: -1;
+}
+
+.glitchText::after {
+  color: var(--accent-red);
+  z-index: -1;
+}
+
+/* Low intensity glitch */
+.glitchLow::before,
+.glitchLow::after {
+  animation: none;
+}
+
+.glitchLow.glitching::before {
+  opacity: 0.8;
+  animation: glitchClip1Low 400ms steps(2) 1;
+}
+
+.glitchLow.glitching::after {
+  opacity: 0.8;
+  animation: glitchClip2Low 400ms steps(2) 1;
+}
+
+/* Medium intensity glitch */
+.glitchMedium::before,
+.glitchMedium::after {
+  animation: none;
+}
+
+.glitchMedium.glitching::before {
+  opacity: 0.8;
+  animation: glitchClip1Med 600ms steps(3) 1;
+}
+
+.glitchMedium.glitching::after {
+  opacity: 0.8;
+  animation: glitchClip2Med 600ms steps(3) 1;
+}
+
+/* High intensity glitch */
+.glitchHigh::before,
+.glitchHigh::after {
+  animation: none;
+}
+
+.glitchHigh.glitching::before {
+  opacity: 0.9;
+  animation: glitchClip1High 800ms steps(4) 1;
+}
+
+.glitchHigh.glitching::after {
+  opacity: 0.9;
+  animation: glitchClip2High 800ms steps(4) 1;
+}
+
+@keyframes glitchClip1Low {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  50%  { clip-path: inset(30% 0 50% 0); transform: translate(-2px, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+@keyframes glitchClip2Low {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  50%  { clip-path: inset(60% 0 20% 0); transform: translate(2px, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+@keyframes glitchClip1Med {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  25%  { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 1px); }
+  50%  { clip-path: inset(70% 0 5% 0); transform: translate(3px, -1px); }
+  75%  { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+@keyframes glitchClip2Med {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  25%  { clip-path: inset(60% 0 10% 0); transform: translate(4px, -1px); }
+  50%  { clip-path: inset(10% 0 70% 0); transform: translate(-4px, 1px); }
+  75%  { clip-path: inset(50% 0 20% 0); transform: translate(2px, 1px); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+@keyframes glitchClip1High {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  15%  { clip-path: inset(15% 0 65% 0); transform: translate(-5px, 2px); }
+  30%  { clip-path: inset(80% 0 2% 0); transform: translate(5px, -2px); }
+  50%  { clip-path: inset(5% 0 85% 0); transform: translate(-4px, 1px); }
+  70%  { clip-path: inset(45% 0 25% 0); transform: translate(6px, -1px); }
+  85%  { clip-path: inset(70% 0 10% 0); transform: translate(-3px, 2px); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+@keyframes glitchClip2High {
+  0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+  15%  { clip-path: inset(65% 0 15% 0); transform: translate(6px, -2px); }
+  30%  { clip-path: inset(2% 0 80% 0); transform: translate(-5px, 2px); }
+  50%  { clip-path: inset(85% 0 5% 0); transform: translate(4px, -1px); }
+  70%  { clip-path: inset(25% 0 45% 0); transform: translate(-6px, 1px); }
+  85%  { clip-path: inset(10% 0 70% 0); transform: translate(3px, -2px); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+
+/* ── TERMINAL BLOCK ────────────────────────────────────────── */
+.terminalBlock {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--accent-green);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+
+.terminalDots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotRed {
+  background: var(--accent-red);
+  box-shadow: 0 0 4px var(--accent-red-dim);
+}
+
+.dotYellow {
+  background: var(--accent-amber);
+  box-shadow: 0 0 4px var(--accent-amber-dim);
+}
+
+.dotGreen {
+  background: var(--accent-green);
+  box-shadow: 0 0 4px var(--accent-green-dim);
+}
+
+.terminalTitle {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-left: var(--space-sm);
+  user-select: none;
+}
+
+.terminalBody {
+  padding: var(--space-lg);
+  min-height: 60px;
+  line-height: 1.7;
+}
+
+
+/* ── SCORE GAUGE ───────────────────────────────────────────── */
+.gaugeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.gaugeSvg {
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 8px var(--gauge-color, var(--accent-green)));
+}
+
+.gaugeTrack {
+  fill: none;
+  stroke: var(--bg-tertiary);
+  stroke-width: 6;
+}
+
+.gaugeFill {
+  fill: none;
+  stroke: var(--gauge-color, var(--accent-green));
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.5s ease;
+}
+
+.gaugeCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gaugeScore {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--gauge-color, var(--accent-green));
+  text-shadow: 0 0 12px var(--gauge-color, var(--accent-green));
+}
+
+.gaugeScoreSm {
+  font-size: 1.2rem;
+}
+
+.gaugeLabel {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: var(--space-xs);
+}
+
+.gaugeWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ── ANIMATED COUNTER ──────────────────────────────────────── */
+.counter {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.counterPrefix,
+.counterSuffix {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+
+/* ── CRT OVERLAY ───────────────────────────────────────────── */
+.crtWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-crt);
+}
+
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.018) 2px,
+    rgba(0, 255, 65, 0.018) 4px
+  );
+  animation: crtScanlines 8s linear infinite;
+}
+
+@keyframes crtScanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+.vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+.noise {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  opacity: 0.025;
+  animation: crtNoise 0.4s steps(4) infinite;
+}
+
+@keyframes crtNoise {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-5px, 5px); }
+  50%  { transform: translate(5px, -5px); }
+  75%  { transform: translate(-3px, -3px); }
+  100% { transform: translate(0, 0); }
+}
+
+.flickerLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 255, 65, 0.06);
+  animation: flickerLineSweep 4s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes flickerLineSweep {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 0.6; }
+  95%  { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+
+
+/* ── SECTION HEADER ────────────────────────────────────────── */
+.sectionHeader {
+  margin-bottom: var(--space-xl);
+  position: relative;
+}
+
+.sectionHeaderInner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.sectionPrompt {
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xl);
+  opacity: 0.5;
+  user-select: none;
+  line-height: 1;
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.sectionSubtitle {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  padding-left: calc(var(--font-size-xl) + var(--space-sm) + 4px);
+}
+
+.sectionAccent {
+  display: block;
+  width: 60px;
+  height: 3px;
+  border-radius: 2px;
+  margin-top: var(--space-md);
+  margin-left: calc(var(--font-size-xl) + var(--space-sm) + 4px);
+  opacity: 0.8;
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gaugeScore {
+    font-size: 1.4rem;
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .sectionSubtitle {
+    padding-left: 0;
+  }
+
+  .sectionAccent {
+    margin-left: 0;
+  }
+
+  .terminalBody {
+    padding: var(--space-md);
+  }
+}
+
+/* ── REDUCED MOTION ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .glitchText::before,
+  .glitchText::after {
+    display: none;
+  }
+
+  .scanlines,
+  .noise,
+  .flickerLine {
+    animation: none;
+  }
+
+  .gaugeFill {
+    transition: none;
+  }
+}

@@ -1,0 +1,21 @@
+services:
+  devinspect-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devinspect-ai:latest
+    container_name: devinspect-ai
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      # - DEVINSPECT_PASSWORD=your_bcrypt_hashed_password_here (uncomment to lock instance)
+      # - SESSION_SECRET=change-this-in-production-for-cookie-encryption
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => r.json()).then(d => { if(d.status !== 'UP') process.exit(1); }).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

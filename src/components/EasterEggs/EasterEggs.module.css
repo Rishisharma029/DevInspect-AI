@@ -1,0 +1,313 @@
+/* ═══ RECRUITER TYPING ═══ */
+.recruiterTyping {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  z-index: 500;
+  box-shadow: var(--shadow-card);
+}
+
+.recruiterDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.recruiterText {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.dots span {
+  animation: dotBlink 1.4s infinite;
+  opacity: 0;
+}
+
+.dots span:nth-child(1) { animation-delay: 0s; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBlink {
+  0%, 20% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ═══ BURNOUT METER ═══ */
+.burnoutMeter {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  z-index: 100;
+}
+
+.burnoutEmoji {
+  font-size: 20px;
+}
+
+.burnoutInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.burnoutLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.burnoutLevel {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.burnoutCount {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+/* ═══ TOUCH GRASS ═══ */
+.touchGrass {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: var(--z-modal);
+  cursor: pointer;
+}
+
+.touchGrassCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green-dim);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  max-width: 400px;
+  text-align: center;
+}
+
+.touchGrassEmoji {
+  font-size: 48px;
+}
+
+.touchGrassTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  color: var(--accent-green);
+  letter-spacing: 0.15em;
+}
+
+.touchGrassText {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.touchGrassRecommendation {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.touchGrassBtn {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-lg);
+  cursor: pointer;
+  margin-top: var(--space-sm);
+  transition: all var(--transition-fast);
+}
+
+.touchGrassBtn:hover {
+  border-color: var(--accent-green-dim);
+  color: var(--text-secondary);
+}
+
+/* ═══ HUMANITY CHECK ═══ */
+.humanityCheck {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: var(--z-modal);
+}
+
+.humanityCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 400px;
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.humanityDots {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  color: var(--text-dim);
+  letter-spacing: 8px;
+}
+
+.humanityWait {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-lg);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.humanitySolid {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.humanityRespect {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-2xl);
+  color: var(--accent-green);
+  font-weight: 800;
+  text-shadow: 0 0 20px var(--accent-green-dim);
+}
+
+.humanityBtn {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.humanityBtn:hover {
+  border-color: var(--accent-green-dim);
+  color: var(--text-secondary);
+}
+
+/* ═══ DVD LOGO ═══ */
+.dvdLogo {
+  position: fixed;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.4;
+  transition: color 0.3s;
+}
+
+.cornerHit {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.cornerHitTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  color: var(--accent-amber);
+  text-shadow: 0 0 30px var(--accent-amber-dim);
+  letter-spacing: 0.1em;
+}
+
+.cornerHitAura {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--accent-purple);
+  font-weight: 700;
+}
+
+/* ═══ RESPECT BADGE (PERSISTENT) ═══ */
+.respectBadge {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green-dim);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  z-index: 500;
+  box-shadow: 0 0 15px var(--accent-green-dim);
+  animation: pulse-glow-badge 2s ease-in-out infinite;
+}
+
+.respectBadgeGlow {
+  font-size: 16px;
+}
+
+.respectBadgeText {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--accent-green);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 5px var(--accent-green-glow);
+}
+
+@keyframes pulse-glow-badge {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--accent-green-dim);
+    border-color: var(--accent-green-dim);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--accent-green-glow);
+    border-color: var(--accent-green);
+  }
+}
