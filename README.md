@@ -60,7 +60,7 @@ flowchart TD
     class gemini_engine ai;
 
     FallbackReview["personas.js Engine<br/>Local rule-based reviews & witty roasts"]:::local
-
+    
     subgraph interaction ["Interactive Display Layout"]
         CRT["CRT Scanline & Noise Overlay"]
         Glitch["Section Headers Glitch Anim"]
@@ -111,6 +111,18 @@ flowchart TD
 *   **Witty Rule-Based Fallbacks**: Don't have a Gemini API key? The local personas engine falls back to generating rule-based developer-humor roasts custom-tailored to your project's stats.
 *   **Social Report Cards**: Renders beautiful report templates (CTO Report, Recruiter Card) and exports them locally to high-quality `.png` files using `html2canvas`.
 *   **Developer Culture Easter Eggs**: Bouncing DVD corners, burnout level trackers, inactivity recruiter bubbles, and 30-minute "Touch Grass" warnings.
+
+---
+
+## 🔒 Security Hardening & Credentials Shield
+
+DevInspect AI enforces production-grade security standards to protect users and development instances:
+*   **Zero Long-Term Token Storage**: All credentials (GitHub PAT and Gemini API Keys) are persisted **exclusively in `sessionStorage`**. They are stored only during the active browser session and are completely discarded on tab refresh, closure, or logout.
+*   **Local Heuristics Secrets Scanner**: The analyzer contains a built-in secrets scanner matching rules for `.env` exposures, committed private keys (`.pem`, `.key`, `id_rsa`), AWS access keys, JWT tokens, and hardcoded variables.
+*   **Hardened Node Production Server**: Features:
+    *   **Helmet.js CSP Configuration**: Employs strict HTTP headers and a robust Content Security Policy, locking script sources and limiting API connections strictly to `api.github.com` and `generativelanguage.googleapis.com`.
+    *   **Express Rate Limiter**: Limits endpoints to a maximum of 100 requests per 15 minutes to block DDoS and rate limit abuse.
+    *   **Secure Session Cookies**: Implements secure, signed HttpOnly cookies (with `secure: true` in production) to safeguard administrative logins.
 
 ---
 
@@ -183,7 +195,56 @@ A CI/CD validation pipeline is defined in `.github/workflows/ci.yml`. It runs au
 
 ---
 
-## 📝 License & Contributions
+## 🛠️ Technology Stack
 
-*   **License**: This project is licensed under the terms of the **[LICENSE.md](file:///c:/Users/Rishi%20Sharma/.gemini/antigravity/scratch/DEVINSPECT%20AI/LICENSE.md)** (Educational and Non-Commercial Use). You may modify and run the software for personal study, but commercial monetization or SaaS deployment is prohibited.
-*   **Contributing**: See **[CONTRIBUTING.md](file:///c:/Users/Rishi%20Sharma/.gemini/antigravity/scratch/DEVINSPECT%20AI/CONTRIBUTING.md)** for details on how to add new developer personas, visual styles, or interactive easter eggs.
+| Layer | Technology | Details |
+| ----- | ---------- | ------- |
+| **Frontend Core** | React 19 + Vite 8 | Ultra-fast SPA scaffolding |
+| **Styling** | Vanilla CSS Modules | Scope-isolated custom classes |
+| **Animations** | Motion (Framer Motion) | Hardware-accelerated fluid motion transitions |
+| **Backend Core** | Node.js + Express 5 | High-performance API server |
+| **Security Headers** | Helmet.js v8 | CSP validation and X-Frame limits |
+| **Unit Testing** | Vitest 4 + V8 | Test-driven metrics validation |
+| **Containerization** | Docker + Compose | Multi-stage Alpine node runtime |
+
+---
+
+## 🗺️ Product Roadmap
+
+- [ ] **GitHub OAuth Integration**: Transition from manual PAT inputs to standard, OAuth-based token authorization.
+- [ ] **Multi-Git Providers Support**: Expand heuristic scanners and API integrations to support GitLab and Bitbucket repositories.
+- [ ] **Abstract Syntax Tree (AST) Parsing**: Incorporate local Javascript/Python AST parsers to diagnose structural logic risks.
+- [ ] **Custom Persona Builder**: Allow developers to prompt custom inspection personas with individualized scoring weights.
+
+---
+
+## 📸 Screenshot Gallery
+
+### Dashboard Landing View
+![Dashboard Overview](docs/screenshots/dashboard_overview.png)
+
+### Heuristics Scans & Evidence Boards
+![Repository Analysis](docs/screenshots/repository_analysis.png)
+![Documentation Analysis](docs/screenshots/documentation_analysis.png)
+
+### Diagnostics & Persona Reviews
+![Security Scanner](docs/screenshots/security_scanner.png)
+![Persona Reviews](docs/screenshots/persona_reviews.png)
+
+### Export Cards & Recruiter Portals
+![Export Reports](docs/screenshots/export_reports.png)
+![Recruiter View](docs/screenshots/recruiter_view.png)
+![CTO View](docs/screenshots/cto_view.png)
+
+---
+
+## 👥 Authors & Credits
+
+*   **Rishi Sharma** - Lead Developer & Systems Architect
+*   **Antigravity AI** - Peer Programming Assistant (Google DeepMind Team)
+
+---
+
+## 📄 License & Terms
+
+This project is licensed under the terms of the **[LICENSE.md](LICENSE.md)** (Educational and Non-Commercial Use). You may modify and run the software for personal study, but commercial monetization or SaaS deployment is prohibited. For details on how to contribute, review the **[CONTRIBUTING.md](CONTRIBUTING.md)** document.
