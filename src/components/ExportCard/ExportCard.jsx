@@ -5,6 +5,41 @@ import { useApp } from '../../context/AppContext';
 import styles from './ExportCard.module.css';
 import { getScoreColor, getScoreLabel, formatNumber } from '../../utils/helpers';
 
+const SECURITY_FINDINGS = [
+  {
+    id: 'SEC-001',
+    vuln: 'Hardcoded AWS Access Key ID',
+    cwe: 'CWE-798: Use of Hard-coded Credentials',
+    cvss: '9.8 (Critical)',
+    file: 'config/aws.js',
+    func: 'initializeAWS()',
+    evidence: 'const ACCESS_KEY = "AKIAIOSFODNN7EXAMPLE";',
+    attackPath: '1. Access repository code ➔ 2. Scan for high-entropy strings ➔ 3. Extract active credentials ➔ 4. Gain full AWS console access.',
+    remediation: 'Extract keys to environment variables and utilize dotenv configurations.',
+    diff: `-const ACCESS_KEY = "AKIAIOSFODNN7EXAMPLE";
++const ACCESS_KEY = process.env.AWS_ACCESS_KEY_ID;`,
+    patchHash: 'sha256-a19f2b87c093a18e24c29188e404b901a',
+    testResults: 'PASS: Security checklist "AWS credential checks" completed successfully.',
+    verification: 'PASS: Verified dynamic secret extraction via mock STS client.'
+  },
+  {
+    id: 'SEC-002',
+    vuln: 'SQL Injection in User Login',
+    cwe: 'CWE-89: Improper Neutralization of Special Elements used in an SQL Command',
+    cvss: '8.8 (High)',
+    file: 'server/controllers/auth.js',
+    func: 'loginUser()',
+    evidence: 'const query = `SELECT * FROM users WHERE email = \'${email}\'`;',
+    attackPath: '1. Input malicious email string ➔ 2. Subvert SQL query boundaries ➔ 3. Bypass authorization gates ➔ 4. Dump entire user database.',
+    remediation: 'Use parameterized/prepared SQL statement arguments instead of direct concatenation.',
+    diff: `-const query = \`SELECT * FROM users WHERE email = '\${email}'\`;
++const query = "SELECT * FROM users WHERE email = ?";`,
+    patchHash: 'sha256-d7a228f8f9024ab7720d18b2f1501c34a',
+    testResults: 'PASS: 8 SQL Inject fuzzing cases passed with rejection status.',
+    verification: 'PASS: DB client syntax validator confirms parameter bindings.'
+  }
+];
+
 export default function ExportCard() {
   const { state } = useApp();
   const { repoData, analysisResult } = state;
@@ -43,6 +78,7 @@ export default function ExportCard() {
     report: { label: 'Report Card', emoji: '📊' },
     recruiter: { label: 'Recruiter View', emoji: '👔' },
     cto: { label: 'CTO View', emoji: '🚀' },
+    security: { label: 'Security Audit', emoji: '🛡️' },
   };
 
   return (
@@ -71,7 +107,7 @@ export default function ExportCard() {
 
       {/* The exportable card */}
       <div className={styles.cardWrapper}>
-        <div ref={cardRef} className={styles.card}>
+        <div ref={cardRef} className={`${styles.card} ${activeView === 'security' ? styles.cardWide : ''}`}>
           <div className={styles.cardBrand}>
             <span className={styles.cardBrandName}>DEVINSPECT AI</span>
             <span className={styles.cardBrandSub}>repository inspection report</span>
@@ -126,7 +162,88 @@ export default function ExportCard() {
             </div>
           )}
 
-          {analysisResult.roastLine && (
+          {activeView === 'security' && (
+            <div className={styles.securityReport}>
+              <div className={styles.reportSectionTitle}>AUTOMATED SECURITY AUDIT REPORT</div>
+              <div className={styles.scanMeta}>
+                <span><strong>Scan ID:</strong> DI-SCAN-{(repo.id ?? 1849204).toString(16).toUpperCase()}</span>
+                <span><strong>Timestamp:</strong> {new Date().toISOString()}</span>
+              </div>
+
+              {SECURITY_FINDINGS.map((finding) => (
+                <div key={finding.id} className={styles.findingItem}>
+                  <div className={styles.findingHeader}>
+                    <span className={styles.findingId}>{finding.id}</span>
+                    <span className={styles.findingCwe}>{finding.cwe}</span>
+                    <span className={styles.findingCvss}>CVSS: {finding.cvss}</span>
+                  </div>
+
+                  <div className={styles.findingDescGrid}>
+                    <div><strong>Vulnerability:</strong> {finding.vuln}</div>
+                    <div><strong>Affected File:</strong> {finding.file}</div>
+                    <div><strong>Affected Function:</strong> {finding.func}</div>
+                  </div>
+
+                  <div className={styles.findingTexts}>
+                    <div><strong>Attack Path:</strong> {finding.attackPath}</div>
+                    <div><strong>Remediation:</strong> {finding.remediation}</div>
+                  </div>
+
+                  {/* Evidence Chain Diagram */}
+                  <div className={styles.chainContainer}>
+                    <div className={styles.chainTitle}>EVIDENCE CHAIN</div>
+                    <div className={styles.chainFlow}>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>Finding ID</div>
+                        <div className={styles.nodeValue}>{finding.id}</div>
+                      </div>
+                      <div className={styles.chainConnector}>➔</div>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>Scanner Evidence</div>
+                        <div className={styles.nodeValue}><code>{finding.evidence}</code></div>
+                      </div>
+                      <div className={styles.chainConnector}>➔</div>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>AI Reasoning</div>
+                        <div className={styles.nodeValue}>Active credentials exposure inside static source files.</div>
+                      </div>
+                      <div className={styles.chainConnector}>➔</div>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>Patch Hash</div>
+                        <div className={styles.nodeValue}><code>{finding.patchHash.substring(7, 19)}</code></div>
+                      </div>
+                      <div className={styles.chainConnector}>➔</div>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>Test Results</div>
+                        <div className={styles.nodeValue}>{finding.testResults}</div>
+                      </div>
+                      <div className={styles.chainConnector}>➔</div>
+                      <div className={styles.chainNode}>
+                        <div className={styles.nodeKey}>Verification Result</div>
+                        <div className={styles.nodeValue}>{finding.verification}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.diffWrapper}>
+                    <div className={styles.diffHeader}>Git Patch Diff</div>
+                    <pre className={styles.diffPre}>
+                      {finding.diff.split('\n').map((line, idx) => (
+                        <div
+                          key={idx}
+                          className={line.startsWith('+') ? styles.diffAdd : line.startsWith('-') ? styles.diffRemove : ''}
+                        >
+                          {line}
+                        </div>
+                      ))}
+                    </pre>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {analysisResult.roastLine && activeView !== 'security' && (
             <div className={styles.cardRoast}>
               "{analysisResult.roastLine}"
             </div>

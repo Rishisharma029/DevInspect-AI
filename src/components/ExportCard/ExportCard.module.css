@@ -287,3 +287,191 @@
   box-shadow: 0 0 15px var(--accent-cyan-dim);
   transform: translateY(-1px);
 }
+
+/* Wide card style for security audit view */
+.cardWide {
+  width: 780px !important;
+}
+
+.securityReport {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.reportSectionTitle {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--accent-green);
+  border-bottom: 1px dashed var(--border-subtle);
+  padding-bottom: var(--space-xs);
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.scanMeta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.findingItem {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.findingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 4px;
+}
+
+.findingId {
+  color: var(--accent-red);
+  font-weight: 700;
+}
+
+.findingCwe {
+  color: var(--text-secondary);
+}
+
+.findingCvss {
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+.findingDescGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-xs);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.findingTexts {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+/* Evidence Chain Diagram */
+.chainContainer {
+  margin-top: var(--space-sm);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.chainTitle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.chainFlow {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chainNode {
+  flex: 1;
+  min-width: 90px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.nodeKey {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.nodeValue {
+  font-size: 9px;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-top: 2px;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.nodeValue code {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--accent-cyan);
+}
+
+.chainConnector {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  user-select: none;
+}
+
+/* Diff Style inside report */
+.diffWrapper {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #06060a;
+}
+
+.diffHeader {
+  background: #111118;
+  padding: 4px var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.diffPre {
+  margin: 0;
+  padding: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+.diffAdd {
+  background: rgba(0, 255, 65, 0.08);
+  color: #a3e8b0;
+  display: block;
+}
+
+.diffRemove {
+  background: rgba(255, 62, 62, 0.08);
+  color: #e8a3a3;
+  display: block;
+}

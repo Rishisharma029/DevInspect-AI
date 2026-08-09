@@ -8,6 +8,7 @@ import Hero from './components/Hero/Hero';
 import RepoInput from './components/RepoInput/RepoInput';
 import ScanPhase from './components/ScanPhase/ScanPhase';
 import RepoOverview from './components/RepoOverview/RepoOverview';
+import ExecutiveSecurityDashboard from './components/ExecutiveSecurityDashboard/ExecutiveSecurityDashboard';
 import RiskBoard from './components/RiskBoard/RiskBoard';
 import MetricsDashboard from './components/MetricsDashboard/MetricsDashboard';
 import PersonaReviews from './components/PersonaReviews/PersonaReviews';
@@ -204,6 +205,8 @@ export default function App() {
           </div>
 
           <RepoOverview />
+          <div className="section-divider" />
+          <ExecutiveSecurityDashboard />
           <div className="section-divider" />
           <RiskBoard />
           <div className="section-divider" />
